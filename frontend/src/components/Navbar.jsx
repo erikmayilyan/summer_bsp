@@ -31,7 +31,7 @@ const Navbar = () => {
             </li>
           </ul>
           <div className="navbar-signin">
-            <a href="" className="signin-btn">
+            <a href="/sign-in" className="signin-btn">
               Sign In
             </a>
           </div>
@@ -58,7 +58,7 @@ const Navbar = () => {
               </li>
             </ul>
             <div className="mobile-version-signin">
-              <a href="#">
+              <a href="/sign-in">
                 SIGN IN
               </a>
             </div>
