@@ -1,0 +1,107 @@
+.options {
+  margin-top: 80px;
+  background-color: rgb(227, 233, 255);
+  padding-bottom: 60px;
+}
+
+.options h2 {
+  font-size: 30px;
+  line-height: 36px;
+  text-align: center;
+  padding-top: 50px;
+  margin-bottom: 32px;
+  text-transform: uppercase;
+}
+
+.options-individual {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: 30px;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+.option {
+  width: 200px;
+  border-radius: 15px;
+  border: 2px solid blue;
+  padding: 20px;
+}
+
+.option-info-p {
+  padding: 10px;
+  color: black;
+}
+
+.option-info-p2 {
+  margin-bottom: 30px;
+}
+
+.option-info p {
+  font-size: 25px;
+  text-transform: uppercase;
+}
+
+.option-info-price {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.option-info ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+.option-info ul li {
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.option-purchase {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 40px;
+  padding: 10px;
+  margin-top: 20px;
+  font-size: 15px;
+  border: 1px solid blue;
+  border-radius: 10px;
+  transition: all 200ms;
+  text-decoration: none;
+}
+
+.option-purchase:hover {
+  background-color: rgb(63, 177, 14);
+  color: white;
+  border: 1px solid white
+}
+
+@media screen and (min-width: 640px) {
+  .options h2 {
+    font-size: 35px;
+  }
+
+  .options-individual {
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+  }
+
+  .option {
+    width: 250px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .options h2 {
+    font-size: 50px;
+    line-height: 60px;
+  }
+
+  .options-individual {
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+  }
+}

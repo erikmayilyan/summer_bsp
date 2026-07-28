@@ -1,0 +1,145 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: white;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(0, 78, 211, 0.8);
+}
+
+.navbar-container {
+  margin-left: 20px;
+  margin-right: 20px;
+  position: relative;
+  font-size: 20px;
+  line-height: 20px;
+}
+
+.navbar-container-two {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-container-three {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.nav-logo {
+  font-size: 120%;
+  text-transform: uppercase;
+  color: #1b5e99;
+}
+
+.navbar-options {
+  display: none;
+  margin-left: 56px;
+  list-style: none;
+}
+
+.navbar-options a {
+  text-decoration: none;
+  color: #1b5e99;
+  text-transform: uppercase;
+}
+
+.navbar-signin {
+  display: none;
+}
+
+.signin-btn {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border: 1px solid;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #1b5e99;
+  text-transform: uppercase;
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.hamburger button {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #1b5e99;
+}
+
+.mobile-version-active {
+  position: fixed;
+  right: 0;
+  z-index: 20;
+  background-color: #1b5e99;
+  width: 100%;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.mobile-version-active ul {
+  list-style: none;
+}
+
+.mobile-version-active ul li {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.mobile-version-active ul li a {
+  text-decoration: none;
+  color: white;
+}
+
+.mobile-version-signin {
+  display: flex;
+  gap: 20px;
+}
+
+.mobile-version-signin a {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border: 1px solid;
+  border-radius: 10px;
+  color: white;
+  text-decoration: none;
+  margin-left: 50px;
+}
+
+@media screen and (min-width: 1024px) {
+  .navbar-options {
+    display: flex;
+    gap: 48px;
+  }
+
+  .navbar-signin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .hamburger {
+    display: none;
+  }
+
+  .mobile-version-active {
+    display: none;
+  }
+}
