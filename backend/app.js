@@ -23,6 +23,25 @@ const ClientSchema = new mongoose.Schema({
 
 const ClientModel = mongoose.model("clients", ClientSchema);
 
+function toClientResponse(client) {
+  return {
+    name: client.name,
+    email: client.email,
+    address: client.address,
+    city: client.city,
+    zip: client.zip,
+    role: client.role,
+  };
+}
+
+async function findClientByEmail(email) {
+  const normalizedEmail = email.trim().toLowerCase();
+
+  return ClientModel.findOne({
+    $expr: { $eq: [{ $toLower: "$email" }, normalizedEmail] }
+  });
+}
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB connected");
@@ -37,7 +56,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.post("/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
-    const client = await ClientModel.findOne({ email });
+    const client = await findClientByEmail(email);
 
     if (!client) {
       return res.json("No Record Found!");
@@ -47,7 +66,25 @@ app.post("/signin", async (req, res) => {
       return res.json("The Password is Incorrect!");
     }
 
-    return res.json("Signin was Successful!");
+    return res.json({
+      message: "Signin was Successful!",
+      client: toClientResponse(client),
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/client", async (req, res) => {
+  try {
+    const { email } = req.query;
+    const client = await findClientByEmail(email);
+
+    if (!client) {
+      return res.status(404).json({ error: "No Record Found!" });
+    }
+
+    return res.json(toClientResponse(client));
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -56,10 +93,11 @@ app.post("/signin", async (req, res) => {
 app.post("/signup", async (req, res) => {
   try {
     const { name, email, password, address, city, zip } = req.body;
+    const normalizedEmail = email.trim().toLowerCase();
 
     console.log("Signup request body:", req.body);
 
-    const existingClient = await ClientModel.findOne({ email });
+    const existingClient = await findClientByEmail(normalizedEmail);
 
     if (existingClient) {
       return res.json("Account Already Exists!");
@@ -67,7 +105,7 @@ app.post("/signup", async (req, res) => {
 
     const newClient = await ClientModel.create({
       name,
-      email,
+      email: normalizedEmail,
       password,
       address,
       city,
