@@ -23,25 +23,6 @@ const ClientSchema = new mongoose.Schema({
 
 const ClientModel = mongoose.model("clients", ClientSchema);
 
-function toClientResponse(client) {
-  return {
-    name: client.name,
-    email: client.email,
-    address: client.address,
-    city: client.city,
-    zip: client.zip,
-    role: client.role,
-  };
-}
-
-async function findClientByEmail(email) {
-  const normalizedEmail = email.trim().toLowerCase();
-
-  return ClientModel.findOne({
-    $expr: { $eq: [{ $toLower: "$email" }, normalizedEmail] }
-  });
-}
-
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB connected");
@@ -56,7 +37,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.post("/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
-    const client = await findClientByEmail(email);
+    const client = await ClientModel.findOne({ email: email.trim().toLowerCase() });
 
     if (!client) {
       return res.json("No Record Found!");
@@ -68,7 +49,14 @@ app.post("/signin", async (req, res) => {
 
     return res.json({
       message: "Signin was Successful!",
-      client: toClientResponse(client),
+      client: {
+        name: client.name,
+        email: client.email,
+        address: client.address,
+        city: client.city,
+        zip: client.zip,
+        role: client.role
+      },
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -78,13 +66,20 @@ app.post("/signin", async (req, res) => {
 app.get("/client", async (req, res) => {
   try {
     const { email } = req.query;
-    const client = await findClientByEmail(email);
+    const client = await ClientModel.findOne({ email: email.trim().toLowerCase() });
 
     if (!client) {
       return res.status(404).json({ error: "No Record Found!" });
     }
 
-    return res.json(toClientResponse(client));
+    return res.json({
+      name: client.name,
+      email: client.email,
+      address: client.address,
+      city: client.city,
+      zip: client.zip,
+      role: client.role
+    });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -93,11 +88,10 @@ app.get("/client", async (req, res) => {
 app.post("/signup", async (req, res) => {
   try {
     const { name, email, password, address, city, zip } = req.body;
-    const normalizedEmail = email.trim().toLowerCase();
 
     console.log("Signup request body:", req.body);
 
-    const existingClient = await findClientByEmail(normalizedEmail);
+    const existingClient = await ClientModel.findOne({ email: email.trim().toLowerCase() });
 
     if (existingClient) {
       return res.json("Account Already Exists!");
@@ -105,7 +99,7 @@ app.post("/signup", async (req, res) => {
 
     const newClient = await ClientModel.create({
       name,
-      email: normalizedEmail,
+      email: email.trim().toLowerCase(),
       password,
       address,
       city,
@@ -113,8 +107,57 @@ app.post("/signup", async (req, res) => {
       role: "user"
     });
 
-    return res.json(newClient);
+    return res.json({
+      name: newClient.name,
+      email: newClient.email,
+      address: newClient.address,
+      city: newClient.city,
+      zip: newClient.zip,
+      role: newClient.role
+    });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
 });
+
+app.put("/edit-profile", async (req, res) => {
+  try {
+    const { email, name, address, city, zip, password } = req.body;
+
+    const client = await ClientModel.findOne({ email: email.trim().toLowerCase() });
+
+    if (!client) {
+      return res.status(404).json({
+        error: "There is no information!!!"
+      });
+    };
+
+    if (name !== undefined || name !== "") {
+      client.name = name;
+    };
+    if (address !== undefined || address !== "") {
+      client.address = address;
+    };
+    if (city !== undefined || city !== "") {
+      client.city = city;
+    };
+    if (zip !== undefined || zip !== "") {
+      client.zip = zip;
+    };
+    if (password !== undefined || password !== "") {
+      client.password = password;
+    }
+
+    await client.save();
+    return res.json({
+      name: client.name,
+      email: client.email,
+      address: client.address,
+      city: client.city,
+      zip: client.zip,
+      role: client.role 
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+})

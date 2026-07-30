@@ -11,7 +11,7 @@ const SignIn = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (localStorage.getItem("signedIn") === "true") {
+    if (localStorage.getItem("signedIn") === "true" && localStorage.getItem("user")) {
       navigate("/dashboard", { replace: true });
     }
   }, [navigate]);
@@ -43,13 +43,6 @@ const SignIn = () => {
         localStorage.setItem("signedIn", "true");
         localStorage.setItem("clientEmail", data.client.email);
         localStorage.setItem("user", JSON.stringify(data.client));
-        navigate("/dashboard", { replace: true });
-        return;
-      }
-
-      if (data === "Signin was Successful!") {
-        localStorage.setItem("signedIn", "true");
-        localStorage.setItem("clientEmail", email.trim());
         navigate("/dashboard", { replace: true });
         return;
       }
