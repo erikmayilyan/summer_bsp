@@ -18,7 +18,13 @@ const Dashboard = () => {
   const [editZip, setEditZip] = useState(client?.zip ?? '');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [clients, setClients] = useState([]);
 
+  const getClients = async () => {
+    const response = await fetch("http://localhost:3000/clients");
+    const data = await response.json();
+    setClients(data);
+  }
 
   useEffect(() => {
     if (client) {
@@ -43,6 +49,12 @@ const Dashboard = () => {
       });
   }, [client]);
 
+  useEffect(() => {
+    if (client?.role === "admin") {
+      getClients();
+    }
+  }, [client]);
+
   const handleLogout = () => {
     localStorage.removeItem("signedIn");
     localStorage.removeItem("clientEmail");
@@ -56,19 +68,24 @@ const Dashboard = () => {
       return;
     };
 
-    const response = await fetch("http://localhost:3000/edit-profile", {
-      method: "PUT",
-      headers: {
-        "Content-Type" : "application/json"
-      },
-      body: JSON.stringify({
+    const payload = {
         email: client.email,
         name: editName,
         address: editAddress,
         city: editCity,
         zip: editZip,
-        password: newPassword
-      })
+      };
+
+    if (newPassword) {
+      payload.password = newPassword;
+    }
+
+    const response = await fetch("http://localhost:3000/edit-profile", {
+      method: "PUT",
+      headers: {
+        "Content-Type" : "application/json"
+      },
+      body: JSON.stringify(payload)
     });
     const editedClient = await response.json();
     setClient(editedClient);
@@ -86,7 +103,16 @@ const Dashboard = () => {
         <Footer />
       </div>
     );
-  }
+  };
+
+  const deleteClient = async (id) => {
+    await fetch(`http://localhost:3000/clients/${id}`, {
+      method: "DELETE",
+    });
+
+    setClients(clients.filter(client => client._id !== id));
+    alert("Account Deleted Successfully!");
+  };
 
   return (
     <div>
@@ -95,17 +121,10 @@ const Dashboard = () => {
         {client.role === "admin" ? (
           <div className="dashboard-container">
             <section className="dashboard-sidebar">
-              <button
-                className={activeSection === "edit" ? "active" : ""}
-                onClick={() => setActiveSection("edit")}
-                type="button"
-              >
-                Edit Profile
-              </button>
               <button 
                 type="button"
-                className={activeSection === "edit" ? "active" : ""}
-                onClick={() => setActiveSection("edit")}
+                className={activeSection === "purchases" ? "active" : ""}
+                onClick={() => setActiveSection("purchases")}
               >
                 All Purchases
               </button>
@@ -139,15 +158,6 @@ const Dashboard = () => {
                   </p>
                 </div>
               )}
-              {activeSection === "edit" && client.role === "admin" && (
-                <div className="dashboard-card">
-                  <h2>Edit Website</h2>
-                  <p>
-                    Modify services, prices and company information.
-                  </p>
-                  <button>Edit</button>
-                </div>
-              )}
               {activeSection === "purchases" && client.role === "admin" && (
                 <div className="dashboard-card">
                   <h2>
@@ -171,9 +181,20 @@ const Dashboard = () => {
               {activeSection === "users" && client.role === "admin" && (
                 <div className="dashboard-card">
                   <h2>Registered Users</h2>
-                  <p>
-                    User management will appear here.
-                  </p>
+                  <div>
+                    {clients.filter((user) => user.role !== "admin").map((user) => (
+                      <div key={user._id} className="dashboard-clients">
+                        <h2>{user.name}</h2>
+                        <p>Email: {user.email}</p>
+                        <p>Address: {user.address}</p>
+                        <p>City: {user.city}</p>
+                        <p>Zip Code: {user.zip}</p>
+                        <button className="client-delete" onClick={() => deleteClient(user._id)}>
+                          DELETE
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
               {activeSection === "account" && client.role === "user" && (
@@ -235,40 +256,51 @@ const Dashboard = () => {
               {activeSection === "account" && client.role === "user" && (
                 <div className="dashboard-card">
                   <h2>Edit Website</h2>
-                  <label>Name</label>
-                  <input 
-                    value={editName}
-                    onChange={(event) => setEditName(event.target.value)}
-                  />
-                  <label>Address</label>
-                  <input 
-                    value={editAddress}
-                    onChange={(event) => setEditAddress(event.target.value)}
-                  />
-                  <label>City</label>
-                  <input 
-                    value={editCity}
-                    onChange={(event) => setEditCity(event.target.value)}
-                  />
-                  <label>ZIP Code</label>
-                  <input 
-                    value={editZip}
-                    onChange={(event) => setEditZip(event.target.value)}
-                  />
-                  <label>New Password</label>
-                  <input
-                    type="password"
-                    value={newPassword}
-                    onChange={(e)=>setNewPassword(e.target.value)}
-                  />
-                  <label>Confirm Password</label>
-                  <input
+                  <div className="edit-group">
+                    <label>Name</label>
+                    <input 
+                      value={editName}
+                      onChange={(event) => setEditName(event.target.value)}
+                    />
+                  </div>
+                  <div className="edit-group">
+                    <label>Address</label>
+                    <input 
+                      value={editAddress}
+                      onChange={(event) => setEditAddress(event.target.value)}
+                    />
+                  </div>
+                  <div className="edit-group">
+                    <label>City</label>
+                    <input 
+                      value={editCity}
+                      onChange={(event) => setEditCity(event.target.value)}
+                    />
+                  </div>
+                  <div className="edit-group">
+                    <label>ZIP Code</label>
+                    <input 
+                      value={editZip}
+                      onChange={(event) => setEditZip(event.target.value)}
+                    />
+                  </div>
+                  <div className="edit-group">
+                    <label>New Password</label>
+                    <input
                       type="password"
-                      value={confirmPassword}
-                      onChange={(e)=>setConfirmPassword(e.target.value)}
-                  />
-
-                  <button onClick={uploadData}>
+                      value={newPassword}
+                      onChange={(e)=>setNewPassword(e.target.value)}
+                    />
+                  </div>
+                  <div className="edit-group">
+                    <label>Confirm Password</label>
+                    <input
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(e)=>setConfirmPassword(e.target.value)}
+                    />
+                  </div>
+                  <button onClick={uploadData} className="save-btn">
                       Save Changes
                   </button>
                 </div>

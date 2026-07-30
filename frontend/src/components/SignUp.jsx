@@ -61,6 +61,7 @@ const SignUp = () => {
         setMessage(data);
       } else {
         setMessage("Account Created Successfully!");
+        alert("Account Created Successfully!");
       };
 
       setName('');

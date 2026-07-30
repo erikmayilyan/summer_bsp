@@ -1,7 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const { execSync } = require('child_process');
 require('dotenv').config();
+
+try {
+  execSync('lsof -t -i :3000 | xargs kill -9 2>/dev/null', { stdio: 'ignore' });
+} catch (error) {
+  // Port is already free.
+}
 
 const app = express();
 app.use(cors());
@@ -23,16 +30,33 @@ const ClientSchema = new mongoose.Schema({
 
 const ClientModel = mongoose.model("clients", ClientSchema);
 
+let server;
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB connected");
-    app.listen(3000, () => {
-      console.log("Server is running!");
+    server = app.listen(3000, () => {
+      console.log("Server is running on http://localhost:3000");
     });
   })
   .catch((error) => {
     console.error("MongoDB connection error:", error);
   });
+
+function shutdown() {
+  console.log("\nShutting down server...");
+  if (!server) {
+    process.exit(0);
+    return;
+  }
+
+  server.close(() => {
+    mongoose.connection.close(false).then(() => process.exit(0));
+  });
+}
+
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
 
 app.post("/signin", async (req, res) => {
   try {
@@ -144,7 +168,7 @@ app.put("/edit-profile", async (req, res) => {
     if (zip !== undefined || zip !== "") {
       client.zip = zip;
     };
-    if (password !== undefined || password !== "") {
+    if (password) {
       client.password = password;
     }
 
@@ -160,4 +184,33 @@ app.put("/edit-profile", async (req, res) => {
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
-})
+});
+
+app.get("/clients", async (req, res) => {
+  try {
+    const clients = await ClientModel.find();
+    res.json(clients);
+  } catch (error) {
+    res.sattus(500).json({
+      error: error.message
+    });
+  }
+});
+
+app.delete("/clients/:id", async (req, res) => {
+  try {
+    const deleteClient = await ClientModel.findByIdAndDelete(req.params.id);
+    if (!deleteClient) {
+      return res.status(404).json({
+        message: "Client not found!"
+      });
+    };
+    res.json({
+      message: "Client has deleted the message successfully!"
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      error: error.message 
+    })
+  }
+});
