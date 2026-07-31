@@ -104,6 +104,18 @@
   cursor: pointer;
 }
 
+.dashboard-messages {
+  border: 1px solid black;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  margin-top: 30px;
+  border-radius: 20px;
+}
+
+.dashboard-messages h3 {
+  text-transform: uppercase;
+}
+
 @media screen and (max-width: 1024px) {
   .dashboard-container {
     flex-direction: column;

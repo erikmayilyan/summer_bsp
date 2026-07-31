@@ -7,7 +7,7 @@ require('dotenv').config();
 try {
   execSync('lsof -t -i :3000 | xargs kill -9 2>/dev/null', { stdio: 'ignore' });
 } catch (error) {
-  // Port is already free.
+  console.log(error);
 }
 
 const app = express();
@@ -29,6 +29,14 @@ const ClientSchema = new mongoose.Schema({
 });
 
 const ClientModel = mongoose.model("clients", ClientSchema);
+
+const ContactChema = new mongoose.Schema({
+  name: String,
+  email: String,
+  message: String
+});
+
+const ContactModel = mongoose.model("contacts", ContactChema);
 
 let server;
 
@@ -214,3 +222,29 @@ app.delete("/clients/:id", async (req, res) => {
     })
   }
 });
+
+app.get("/contacts", async (req, res) => {
+  try {
+    const contacts = await ContactModel.find();
+    res.json(contacts);
+  } catch (error) {
+    res.sattus(500).json({
+      error: error.message
+    });
+  }
+})
+
+app.post("/contacts", async (req, res) => {
+  try {
+    const contact = new ContactModel(req.body);
+    await contact.save();
+    res.json({
+      success: true,
+      message: "Contact Has Been Saved!"
+    })
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+})

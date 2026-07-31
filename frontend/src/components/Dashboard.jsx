@@ -19,6 +19,7 @@ const Dashboard = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [clients, setClients] = useState([]);
+  const [contacts, setContacts] = useState([]);
 
   const getClients = async () => {
     const response = await fetch("http://localhost:3000/clients");
@@ -54,6 +55,16 @@ const Dashboard = () => {
       getClients();
     }
   }, [client]);
+
+  const getContacts = async () => {
+    const response = await fetch("http://localhost:3000/contacts");
+    const data = await response.json();
+    setContacts(data);
+  };
+
+  useEffect(() => {
+    getContacts();
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("signedIn");
@@ -173,9 +184,16 @@ const Dashboard = () => {
               {activeSection === "messages" && client.role === "admin" && (
                 <div className="dashboard-card">
                   <h2>Customer Messages</h2>
-                  <p>
-                    Messages from customers will appear here.
-                  </p>
+                  {contacts.map(contact => (
+                    <div key={contact._id} className="dashboard-messages">
+                      <h3>{contact.name}</h3>
+                      <p>{contact.email}</p>
+                      <div className="dashboard-message">
+                        <h3>Message:</h3>
+                        <p>{contact.message}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
               {activeSection === "users" && client.role === "admin" && (
