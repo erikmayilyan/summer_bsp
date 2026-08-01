@@ -247,4 +247,4 @@ app.post("/contacts", async (req, res) => {
       error: error.message
     });
   }
-})
+});

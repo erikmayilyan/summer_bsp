@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Purchase from './Purchase'
 import "./Options.css"
 
 const Options = () => {
+  const [purchaseModal, setPurchaseModal] = useState(false);
+
   return (
     <div className="options">
       <h2>
@@ -25,6 +28,10 @@ const Options = () => {
             <a
               href="#"
               className="option-purchase"
+              onClick={(event) => {
+                event.preventDefault();
+                setPurchaseModal(true)
+              }}
             >
               PURCHASE NOW
             </a>
@@ -48,6 +55,10 @@ const Options = () => {
             <a
               href="#"
               className="option-purchase"
+              onClick={(event) => {
+                event.preventDefault();
+                setPurchaseModal(true)
+              }}
             >
               PURCHASE NOW
             </a>
@@ -71,12 +82,17 @@ const Options = () => {
             <a
               href="#"
               className="option-purchase"
+              onClick={(event) => {
+                event.preventDefault();
+                setPurchaseModal(true)
+              }}
             >
               PURCHASE NOW
             </a>
           </div>
         </div>
       </div>
+      {purchaseModal && <Purchase closeModal={setPurchaseModal} />}
     </div>
   )
 }
