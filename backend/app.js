@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const { execSync } = require('child_process');
 require('dotenv').config();
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 try {
   execSync('lsof -t -i :3000 | xargs kill -9 2>/dev/null', { stdio: 'ignore' });
@@ -37,6 +38,26 @@ const ContactChema = new mongoose.Schema({
 });
 
 const ContactModel = mongoose.model("contacts", ContactChema);
+
+const PurchaseSchema = new mongoose.Schema({
+  purchaseId: String,
+  packageType: String,
+  name: String,
+  email: String,
+  address: String,
+  city: String,
+  zip: String,
+  phone: String,
+  date: String,
+  time: String,
+  status: {
+    type: String,
+    enum: ['pending', 'accepted', 'failed'],
+    default: 'pending'
+  }
+}, { timestamps: true });
+
+const PurchaseModel = mongoose.model("purchases", PurchaseSchema);
 
 let server;
 
@@ -244,6 +265,120 @@ app.post("/contacts", async (req, res) => {
     })
   } catch (error) {
     res.status(500).json({
+      error: error.message
+    });
+  }
+});
+
+app.post('/payment', async (req, res) => {
+  try {
+    const { packageName, name, email, address, city, zip, phone, date, time, frontendUrl } = req.body;
+    let price;
+    if (packageName == "Basic") {
+      price = 4999;
+    };
+    if (packageName == "Standard") {
+      price = 8999;
+    };
+    if (packageName == "Premium") {
+      price = 14999;
+    };
+
+    const baseUrl = frontendUrl || process.env.FRONTEND_URL || "http://localhost:5173";
+
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price_data: {
+            currency: "eur",
+            product_data: {
+              name: packageName
+            },
+            unit_amount: price
+          },
+          quantity: 1
+        }
+      ],
+      customer_email: email,
+      metadata: {
+        packageName,
+        name,
+        email,
+        address,
+        city,
+        zip,
+        phone,
+        date,
+        time
+      },
+      success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/cancel`
+    });
+
+    return res.json({
+      url: session.url
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message
+    });
+  }
+});
+
+app.get('/success', (req, res) => {
+  return res.send('Success!');
+});
+
+app.get('/cancel', (req, res) => {
+  return res.send('Cancel!');
+});
+
+app.post("/finalize-payment", async (req, res) => {
+  const { session_id } = req.body;
+
+  if (!session_id) {
+    return res.status(400).json({ error: "session_id is required" });
+  }
+
+  try {
+    const session = await stripe.checkout.sessions.retrieve(session_id, {
+      expand: ["payment_intent"]
+    });
+
+    if (!session) {
+      return res.status(404).json({ error: "Session not found" });
+    }
+
+    if (session.payment_status !== "paid") {
+      return res.status(400).json({ error: "Payment has not been completed" });
+    }
+
+    const purchaseId = session.id;
+    let purchase = await PurchaseModel.findOne({ purchaseId });
+
+    if (!purchase) {
+      const metadata = session.metadata || {};
+
+      purchase = await PurchaseModel.create({
+        purchaseId,
+        packageType: metadata.packageName,
+        name: metadata.name,
+        email: metadata.email,
+        address: metadata.address,
+        city: metadata.city,
+        zip: metadata.zip,
+        phone: metadata.phone,
+        date: metadata.date,
+        time: metadata.time,
+        status: "accepted"
+      });
+    }
+
+    return res.json({ purchase });
+  } catch (error) {
+    return res.status(500).json({
       error: error.message
     });
   }

@@ -1,9 +1,15 @@
 import React, { useState } from 'react'
 import Purchase from './Purchase'
+import { useNavigate } from 'react-router-dom'
 import "./Options.css"
 
 const Options = () => {
   const [purchaseModal, setPurchaseModal] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState('');
+  const navigate = useNavigate();
+
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
 
   return (
     <div className="options">
@@ -30,6 +36,12 @@ const Options = () => {
               className="option-purchase"
               onClick={(event) => {
                 event.preventDefault();
+                const signedIn = localStorage.getItem("signedIn") === "true";
+                if (!signedIn) {
+                  navigate("/sign-in");
+                  return;
+                }
+                setSelectedPackage("Basic");
                 setPurchaseModal(true)
               }}
             >
@@ -57,6 +69,12 @@ const Options = () => {
               className="option-purchase"
               onClick={(event) => {
                 event.preventDefault();
+                const signedIn = localStorage.getItem("signedIn") === "true";
+                if (!signedIn) {
+                  navigate("/sign-in");
+                  return;
+                }
+                setSelectedPackage("Standard");
                 setPurchaseModal(true)
               }}
             >
@@ -84,6 +102,12 @@ const Options = () => {
               className="option-purchase"
               onClick={(event) => {
                 event.preventDefault();
+                const signedIn = localStorage.getItem("signedIn") === "true";
+                if (!signedIn) {
+                  navigate("/sign-in");
+                  return;
+                }
+                setSelectedPackage("Premium");
                 setPurchaseModal(true)
               }}
             >
@@ -92,7 +116,7 @@ const Options = () => {
           </div>
         </div>
       </div>
-      {purchaseModal && <Purchase closeModal={setPurchaseModal} />}
+      {purchaseModal && <Purchase closeModal={setPurchaseModal} user={user} packageTitle={selectedPackage} />}
     </div>
   )
 }
