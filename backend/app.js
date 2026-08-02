@@ -257,7 +257,7 @@ app.get("/contacts", async (req, res) => {
       error: error.message
     });
   }
-})
+});
 
 app.post("/contacts", async (req, res) => {
   try {
@@ -394,5 +394,34 @@ app.post("/finalize-payment", async (req, res) => {
     return res.status(500).json({
       error: error.message
     });
+  }
+});
+
+app.get("/purchases", async (req, res) => {
+  try {
+    const purchases = await PurchaseModel.find();
+    res.json(purchases);
+  } catch (error) {
+    res.sattus(500).json({
+      error: error.message
+    });
+  }
+});
+
+app.delete("/purchases/:id", async (req, res) => {
+  try {
+    const deletePurchase = await PurchaseModel.findByIdAndDelete(req.params.id);
+    if (!deletePurchase) {
+      return res.status(404).json({
+        message: "Purchase not found!"
+      });
+    };
+    res.json({
+      message: "Purchase has deleted the message successfully!"
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      error: error.message 
+    })
   }
 });

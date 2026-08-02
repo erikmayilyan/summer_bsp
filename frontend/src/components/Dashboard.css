@@ -116,6 +116,25 @@
   text-transform: uppercase;
 }
 
+.purchase-item {
+  border: 1px solid black;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+}
+
+.all-my-purchases {
+  margin-bottom: 30px;
+}
+
+.purchase-item-user {
+  border: 1px solid black;
+  padding: 20px;
+  padding-top: 0px;
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
 @media screen and (max-width: 1024px) {
   .dashboard-container {
     flex-direction: column;

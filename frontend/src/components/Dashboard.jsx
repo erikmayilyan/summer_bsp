@@ -20,6 +20,7 @@ const Dashboard = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [clients, setClients] = useState([]);
   const [contacts, setContacts] = useState([]);
+  const [purchases, setPurchases] = useState([]);
 
   const getClients = async () => {
     const response = await fetch("http://localhost:3000/clients");
@@ -65,6 +66,25 @@ const Dashboard = () => {
   useEffect(() => {
     getContacts();
   }, []);
+
+  const getPurchases = async () => {
+    const response = await fetch("http://localhost:3000/purchases");
+    const data = await response.json();
+    setPurchases(data);
+  };
+
+  useEffect(() => {
+    getPurchases();
+  }, []);
+
+  const deletePurchase = async (id) => {
+    await fetch(`http://localhost:3000/purchases/${id}`, {
+      method: "DELETE",
+    });
+
+    setPurchases(purchases.filter(purchase => purchase._id !== id));
+    alert("Purchase Deleted Successfully!");
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("signedIn");
@@ -125,6 +145,8 @@ const Dashboard = () => {
     alert("Account Deleted Successfully!");
   };
 
+  const myPurchases = purchases.filter((purchase) => purchase.email?.toLowerCase() === client.email?.toLowerCase());
+
   return (
     <div>
       <Navbar />
@@ -171,14 +193,24 @@ const Dashboard = () => {
               )}
               {activeSection === "purchases" && client.role === "admin" && (
                 <div className="dashboard-card">
-                  <h2>
+                  <h2 className="all-my-purchases">
                     {client.role === "admin"
                       ? "All Purchases"
                     : "My Purchases"}
                   </h2>
-                  <p>
-                    Purchase history will appear here.
-                  </p>
+                  {purchases.map(purchase => (
+                    <div key={purchase._id} className="purchase-item">
+                      <h2>{purchase.name}</h2>
+                      <h3>{purchase.packageType}</h3>
+                      <p>{purchase.email}</p>
+                      <p>{purchase.address}, {purchase.city}, {purchase.zip}</p>
+                      <p>{purchase.phone}</p>
+                      <p>{purchase.date}, {purchase.time}</p>
+                      <button className="client-delete" onClick={() => deletePurchase(purchase._id)}>
+                        DELETE
+                      </button>
+                    </div>
+                  ))}
                 </div>
               )}
               {activeSection === "messages" && client.role === "admin" && (
@@ -259,16 +291,26 @@ const Dashboard = () => {
                   </p>
                 </div>
               )}
-              {activeSection === "purchases" && client.role === "admin" && (
+              {activeSection === "purchases" && client.role === "user" && (
                 <div className="dashboard-card">
                   <h2>
                     {client.role === "admin"
                       ? "All Purchases"
                     : "My Purchases"}
                   </h2>
-                  <p>
-                    Purchase history will appear here.
-                  </p>
+                  {myPurchases.length === 0 ? (
+                    <p>YOU HAVE NOT PURCHASED ANYTHING YET!</p>
+                  ) : (
+                    myPurchases.map((purchase) => (
+                      <div key={purchase._id} className="purchase-item-user">
+                        <h3>{purchase.packageType}</h3>
+                        <p>{purchase.address}, {purchase.city}, {purchase.zip}</p>
+                        <p>{purchase.phone}</p>
+                        <p>{purchase.date}, {purchase.time}</p>
+                        <p>Status: {purchase.status}</p>
+                      </div>
+                    ))
+                  )}
                 </div>
               )}
               {activeSection === "account" && client.role === "user" && (
