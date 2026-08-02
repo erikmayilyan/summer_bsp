@@ -1,0 +1,34 @@
+.cancel {
+  padding: 20px;
+}
+
+.cancel h1 {
+  text-transform: uppercase;
+  text-align: center;
+  color: red;
+}
+
+.cancel button {
+  display: block;
+  margin: 0 auto;
+  margin-top: 50px;
+  background-color: white;
+  color: rgba(0, 78, 211, 0.8);
+  border: 1px solid rgba(0, 78, 211, 0.8);
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 120%;
+  cursor: pointer;
+}
+
+.cancel button:hover {
+  background-color: rgba(0, 78, 211, 0.8);
+  border-radius: 1px solid white;
+  color: white;
+}
+
+@media screen and (max-width: 640px) {
+  .cancel h1 {
+    line-height: 40px;
+  }
+}

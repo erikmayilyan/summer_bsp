@@ -1,0 +1,29 @@
+.success {
+  padding: 20px;
+}
+
+.success h1 {
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 60px;
+  color: green;
+}
+
+.success h3 {
+  text-align: center;
+  text-transform: uppercase;
+  padding-top: 10px;
+  color: rgba(0, 78, 211, 0.8);
+}
+
+.success h4 {
+  text-align: center;
+  text-transform: uppercase;
+  color: rgba(0, 78, 211, 0.8);
+}
+
+@media screen and (max-width: 640px) {
+  .success h1 {
+    line-height: 40px;
+  }
+}

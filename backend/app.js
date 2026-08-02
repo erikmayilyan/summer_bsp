@@ -40,7 +40,11 @@ const ContactChema = new mongoose.Schema({
 const ContactModel = mongoose.model("contacts", ContactChema);
 
 const PurchaseSchema = new mongoose.Schema({
-  purchaseId: String,
+  purchaseId: {
+    type: String,
+    required: true,
+    unique: true
+  },
   packageType: String,
   name: String,
   email: String,
@@ -356,28 +360,37 @@ app.post("/finalize-payment", async (req, res) => {
     }
 
     const purchaseId = session.id;
-    let purchase = await PurchaseModel.findOne({ purchaseId });
+    const metadata = session.metadata || {};
 
-    if (!purchase) {
-      const metadata = session.metadata || {};
-
-      purchase = await PurchaseModel.create({
-        purchaseId,
-        packageType: metadata.packageName,
-        name: metadata.name,
-        email: metadata.email,
-        address: metadata.address,
-        city: metadata.city,
-        zip: metadata.zip,
-        phone: metadata.phone,
-        date: metadata.date,
-        time: metadata.time,
-        status: "accepted"
-      });
-    }
+    const purchase = await PurchaseModel.findOneAndUpdate(
+      { purchaseId },
+      {
+        $setOnInsert: {
+          purchaseId,
+          packageType: metadata.packageName,
+          name: metadata.name,
+          email: metadata.email,
+          address: metadata.address,
+          city: metadata.city,
+          zip: metadata.zip,
+          phone: metadata.phone,
+          date: metadata.date,
+          time: metadata.time,
+          status: "accepted"
+        }
+      },
+      { upsert: true, new: true }
+    );
 
     return res.json({ purchase });
   } catch (error) {
+    if (error.code === 11000) {
+      const purchase = await PurchaseModel.findOne({ purchaseId: session_id });
+      if (purchase) {
+        return res.json({ purchase });
+      }
+    }
+
     return res.status(500).json({
       error: error.message
     });

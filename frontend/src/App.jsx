@@ -5,6 +5,8 @@ import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 import Dashboard from './components/Dashboard'
 import ProtectedRoute from './ProtectedRoute'
+import Success from './components/Success'
+import Cancel from './components/Cancel'
 import './App.css'
 
 const App = () => {
@@ -21,6 +23,8 @@ const App = () => {
           </ProtectedRoute>
         } 
       />
+      <Route path="/success" element={<Success />} />
+      <Route path="/cancel" element={<Cancel />} />
     </Routes>
   )
 }
