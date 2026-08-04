@@ -7,25 +7,29 @@ import Dashboard from './components/Dashboard'
 import ProtectedRoute from './ProtectedRoute'
 import Success from './components/Success'
 import Cancel from './components/Cancel'
+import Chatbot from './components/Chatbot'
 import './App.css'
 
 const App = () => {
   return (
-    <Routes className="app">
-      <Route path="/" element={<Home />} />
-      <Route path="/sign-in" element={<SignIn />} />
-      <Route path="/sign-up" element={<SignUp />} />
-      <Route 
-        path="/dashboard" 
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } 
-      />
-      <Route path="/success" element={<Success />} />
-      <Route path="/cancel" element={<Cancel />} />
-    </Routes>
+    <div>
+      <Routes className="app">
+        <Route path="/" element={<Home />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route path="/success" element={<Success />} />
+        <Route path="/cancel" element={<Cancel />} />
+      </Routes>
+      <Chatbot />
+    </div>
   )
 }
 

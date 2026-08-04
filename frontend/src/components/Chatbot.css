@@ -1,0 +1,120 @@
+.chatbot {
+  position: fixed;
+  background-color: white;
+  border-radius: 20px;
+  border: 1px solid #5da5fc;
+  z-index: 1000;
+  right: 40px;
+  width: 400px;
+  bottom: 100px;
+}
+
+.chatbot-title {
+  background-color: #106ad8;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+}
+
+.chatbot-title h2 {
+  color: white;
+  text-transform: uppercase;
+}
+
+.chatbot-chat {
+  height: 250px;
+  padding: 20px;
+  overflow-y: scroll;
+}
+
+.chat-answer,
+.chat-question {
+  display: flex;
+}
+
+.chat-question p {
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #5da5fc;
+}
+
+.chat-answer p {
+  color: #5da5fc;
+  border-radius: 10px;
+  background-color: white;
+  border: 1px solid #5da5fc;
+  padding: 10px;
+}
+
+.chat-answer {
+  justify-content: flex-end;
+  margin: 20px;
+}
+
+.chat-textarea {
+  border: 2px solid #5da5fc;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: rgb(237, 237, 237);
+}
+
+.chat-textarea textarea {
+  border: 1px solid #5da5fc;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  outline: none;
+  padding: 20px;
+  height: 50px;
+  flex: 1;
+}
+
+.chat-textarea button {
+  background-color: #5da5fc;
+  text-transform: uppercase;
+  color: white;
+  border: 1px solid blue;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.chat-textarea button:hover {
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+}
+
+.open-close {
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  height: 50px;
+  width: 50px;
+  color: white;
+  background-color: #5da5fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.open-close span {
+  position: absolute;
+}
+
+.open-close span:last-child {
+  opacity: 0;
+}
+
+@media screen and (max-width: 500px) {
+  .chatbot {
+    width: 250px;
+  }
+}
