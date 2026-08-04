@@ -3,6 +3,27 @@ import "./Chatbot.css"
 
 const Chatbot = () => {
   const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('')
+  const [messages, setMessages] = useState([])
+
+  const sendMessage = async () => {
+    const response = await fetch("http://localhost:8000/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type" : "application/json"
+      },
+      body: JSON.stringify({
+        message: message
+      })
+    });
+    const data = await response.json();
+    setMessages([
+      ...messages, 
+      { sender: "user", text: message },
+      { sender: "bot", text: data.reply }
+    ]);
+    setMessage("");
+  };
 
   return (
     <div>
@@ -19,25 +40,21 @@ const Chatbot = () => {
             <h2>Clean<strong>ChatBot</strong></h2>
           </div>
           <ul className="chatbot-chat">
-            <li className="chat-question">
-              <p>Hi there, How can I help you today?</p>
-            </li>
-            <li className="chat-answer">
-              <p>How much does the basic package cost?</p>
-            </li>
-            <li className="chat-question">
-              <p>Hi there, How can I help you today?</p>
-            </li>
-            <li className="chat-answer">
-              <p>How much does the basic package cost?</p>
-            </li>
-            <li className="chat-question">
-              <p>Hi there, How can I help you today?</p>
-            </li>
+            {messages.map((message, index) => (
+              <li
+                key={index}
+                className={message.sender === "bot" ? "chat-question" : "chat-answer"}
+              >
+                <p>{message.text}</p>
+              </li>
+            ))}
           </ul>
           <div className="chat-textarea">
-            <textarea placeholder="Send a message..."></textarea>
-            <button>Send</button>
+            <textarea 
+              placeholder="Send a message..."
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}></textarea>
+            <button onClick={sendMessage}>Send</button>
           </div>
         </div>
       )}
