@@ -1,0 +1,90 @@
+{
+  "company" : "CleanBelval",
+  "packages" : [
+    "Basic",
+    "Standard",
+    "Premium"
+  ],
+  "prices" : {
+    "Basic" : "49.99",
+    "Standard" : "89.99",
+    "Premium" : "149.99"
+  },
+  "contact" : {
+    "address" : "2, Place de l'Université",
+    "zip" : "L-4365",
+    "city" : "Esch-sur-Alzette, Luxembourg",
+    "phone" : "+352 777 777 777"
+  },
+  "services" : {
+    "Basic" : [
+      "Basic home cleaning",
+      "Dusting and surface cleaning",
+      "Bathroom cleaning",
+      "Waste removal"
+    ],
+    "Standard" : [
+      "Everything in Basic",
+      "Deep cleaning services",
+      "Window cleaning",
+      "Office and commercial spaces",
+      "Flexible scheduling"
+    ],
+    "Premium" : [
+      "Everything in Standard",
+      "Eco-friendly cleaning products",
+      "Furniture and detailed cleaning",
+      "Full property maintenance",
+      "Priority customer support"
+    ]
+  },
+  "opening hours" : {
+    "Monday-Friday" : "08:00 - 18:00",
+    "Saturday" : "10:00 - 14:00",
+    "Sunday" : "Closed"
+  },
+  "booking" : {
+    "Methods" : [
+      "Online Booking"
+    ],
+    "Required Info": [
+      "Package Type",
+      "Name",
+      "Email",
+      "Address",
+      "City",
+      "ZIP",
+      "Phone Number",
+      "Select A Date",
+      "Select A Time",
+      "Credit Card Info",
+      "Credit Card Expiration date",
+      "CVV"
+    ]
+  },
+  "company info": {
+    "description": "CleanBelval provides professional cleaning services for homes, offices, commercial spaces, and public areas in Luxembourg.",
+    "mission": "Our goal is to provide reliable, eco-friendly, and high-quality cleaning solutions."
+  },
+  "faq" : {
+    "Do you provide services outside of Belval?" : "Yes, we provide services in all major cities of Grand Duchy of Luxembourg!",
+    "Do you provide cleaning products?" : "Yes, cleaning products are included in all packages, however the type of the product depends on the package you purchase.",
+    "Do you clean commercial spaces?" : "Yes, we provide services for homes, offices, and commercial spaces.",
+    "Do you clean offices?" : "Yes, we provide services for homes, offices, and commercial spaces.",
+    "Do you clean homes?" : "Yes, we provide services for homes, offices, and commercial spaces.",
+    "What is the cancellation policy?" : "Customers should call us directly or contact us through the form on the main page 24 hours before the appointment to cancel and get a full refund!",
+    "What do you offer?" : "Our experienced team provides reliable cleaning services for homes, offices, and commercial spaces. We focus on quality, attention to detail, and customer satisfaction in every project.",
+    "Is your company eco-friendly?" : "We prioritize environmentally responsible cleaning methods by using sustainable products and practices that help protect both your space and the environment.",
+    "Do you clean windows?" : "Yes, window cleaning is included in our Standard and Premium packages.",
+    "Do you clean bathrooms?" : "Yes, bathroom cleaning is included in our Basic package and above.",
+    "Do you remove waste?" : "Yes, waste removal is included in our Basic package.",
+    "Do you offer discounts?" : "Unfortunately, we have fixed prices and we do not offer discounts",
+    "Why should I choose CleanBelval?" : "CleanBelval provides reliable, professional, and eco-friendly cleaning solutions with flexible scheduling and customer-focused service.",
+    "How can I book a cleaning service?" : "You can do so by purchasing a package on our website and filling in the form including the credit card credentials",
+    "How long does a cleaning service take?" : "The duration depends on the size of the property and the selected package.",
+    "What are your working hours/time?" : "We are open monday to saturday. However, monday to friday we work from 08:00 AM until 18:00 PM. On Saturdays, we are available from 10:00 AM to 14:00 PM. On sundays we are closed!",
+    "What happens if I am not satisfied with the cleaning?": "Please contact us and we will work to resolve the issue.",
+    "Can I change my appointment time?" : "You can contact us through phone number or contact form and we will sort it out for you!"
+  },
+  "greeting" : "Hello, how can we help you today?"
+}

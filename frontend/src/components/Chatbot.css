@@ -113,6 +113,13 @@
   opacity: 0;
 }
 
+.chat-thinking {
+  text-decoration: none;
+  list-style: none;
+  text-transform: uppercase;
+  color: #5da5fc;
+}
+
 @media screen and (max-width: 500px) {
   .chatbot {
     width: 250px;

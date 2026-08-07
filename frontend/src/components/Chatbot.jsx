@@ -5,8 +5,11 @@ const Chatbot = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const sendMessage = async () => {
+    setMessage("");
+    setLoading(true);
     const response = await fetch("http://localhost:8000/chat", {
       method: "POST",
       headers: {
@@ -23,6 +26,7 @@ const Chatbot = () => {
       { sender: "bot", text: data.reply }
     ]);
     setMessage("");
+    setLoading(false);
   };
 
   return (
@@ -45,16 +49,22 @@ const Chatbot = () => {
                 key={index}
                 className={message.sender === "bot" ? "chat-question" : "chat-answer"}
               >
-                <p>{message.text}</p>
+              <p>{message.text}</p>
               </li>
-            ))}
+              ))}
+            <li className="chat-thinking">
+              {loading && (
+                <h3 className="chat-question">Thinking...</h3>
+              )}
+            </li>
           </ul>
           <div className="chat-textarea">
             <textarea 
               placeholder="Send a message..."
               value={message}
-              onChange={(event) => setMessage(event.target.value)}></textarea>
-            <button onClick={sendMessage}>Send</button>
+              onChange={(event) => setMessage(event.target.value)}>
+            </textarea>
+            <button disabled={loading} onClick={sendMessage}>Send</button> 
           </div>
         </div>
       )}
