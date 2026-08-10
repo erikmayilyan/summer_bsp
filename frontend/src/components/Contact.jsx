@@ -20,6 +20,13 @@ const Contact = () => {
       })
     });
 
+    if (!response.ok) {
+      alert("Your message has been sent successfully!");
+      return;
+    } else {
+      alert("There was an error sending your message.");
+    }
+
     setName("");
     setEmail("");
     setMessage("");
