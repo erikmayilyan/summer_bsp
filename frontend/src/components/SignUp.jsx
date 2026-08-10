@@ -12,9 +12,32 @@ const SignUp = () => {
   const [city, setCity] = useState('')
   const [zip, setZip] = useState('')
   const [message, setMessage] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [zipError, setZipError] = useState('')
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    };
+    
+    if (!name || !email || !password || !address || !city || !zip) {
+      alert("Please fill up all the field!");
+      return;
+    };
+    
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setEmailError("Please enter a valid email address.");
+      return;
+    }
+    
+    if (!/^\d{4}$/.test(zip)) {
+      setZipError("ZIP code must contain 4 digits");
+      return;
+    };
+
     const payload = {
       name: name,
       email: email.trim(),
@@ -22,21 +45,6 @@ const SignUp = () => {
       address: address,
       city: city,
       zip: zip
-    };
-
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    };
-
-    if (!name || !email || !password || !address || !city || !zip) {
-      alert("Please fill up all the field!");
-      return;
-    };
-
-    if (zip.length !== 4) {
-      alert("ZIP code must contain 4 digits");
-      return;
     };
 
     console.log("Sending payload:", payload);
@@ -90,6 +98,7 @@ const SignUp = () => {
                 type="text" 
                 placeholder="Enter Full Name" 
                 name="name" 
+                value={name}
                 onChange={(event) => setName(event.target.value)} 
               />
             </div>
@@ -99,8 +108,13 @@ const SignUp = () => {
                 type="email" 
                 placeholder="Enter Email" 
                 name="email" 
-                onChange={(event) => setEmail(event.target.value)} 
+                value={email}
+                onChange={(event) => {
+                  setEmail(event.target.value)
+                  setEmailError('')
+                }} 
               />
+              {emailError && <p className="input-error">{emailError}</p>}
             </div>
             <div className="sign-up-group">
               <label>Password</label>
@@ -108,6 +122,7 @@ const SignUp = () => {
                 type="password" 
                 placeholder="Enter Password" 
                 name="password" 
+                value={password}
                 onChange={(event) => setPassword(event.target.value)} 
               />
             </div>
@@ -117,6 +132,7 @@ const SignUp = () => {
                 type="password" 
                 placeholder="Confirm Password" 
                 name="password" 
+                value={confirmPassword}
                 onChange={(event) => setConfirmPassword(event.target.value)} 
               />
             </div>
@@ -126,6 +142,7 @@ const SignUp = () => {
                 type="text" 
                 placeholder="Enter Address" 
                 name="address" 
+                value={address}
                 onChange={(event) => setAddress(event.target.value)} 
               />
             </div>
@@ -134,6 +151,7 @@ const SignUp = () => {
               <select
                 name="address"
                 onChange={(event) => setCity(event.target.value)}
+                value={city}
                 defaultValue=""
               >
                 <option value="" disabled>Select a city</option>
@@ -164,9 +182,17 @@ const SignUp = () => {
               <input 
                 type="text" 
                 placeholder="Enter ZIP Code" 
+                value={zip}
+                maxLength={4}
                 name="zip" 
-                onChange={(event) => setZip(event.target.value)} 
+                onChange={(event) => {
+                  if (/^\d*$/.test(event.target.value)) {
+                    setZip(event.target.value)
+                    setZipError('')
+                  }
+                }} 
               />
+              {zipError && <p className="input-error">{zipError}</p>}
             </div>
             <button type="submit" className="sign-up-btn">Sign Up</button>
             <p>If you already have an account you can sign in below!</p>

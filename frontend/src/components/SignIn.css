@@ -58,6 +58,14 @@
   border: 1px solid white;
 }
 
+.input-error {
+  text-transform: uppercase;
+  color: red;
+  text-align: center;
+  font-size: 130%;
+  margin-bottom: 30px;
+}
+
 @media screen and (max-width: 1024px) {
   .sign-up {
     padding-left: 30px;

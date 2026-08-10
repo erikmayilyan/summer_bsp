@@ -94,6 +94,11 @@ const Dashboard = () => {
   };
 
   const uploadData = async () => {
+    if (!/^\d{4}$/.test(editZip)) {
+      alert("ZIP code must contain exactly 4 digits");
+      return;
+    };
+
     if (newPassword !== confirmPassword) {
       alert("Passwords do not match!!!");
       return;
@@ -341,7 +346,12 @@ const Dashboard = () => {
                     <label>ZIP Code</label>
                     <input 
                       value={editZip}
-                      onChange={(event) => setEditZip(event.target.value)}
+                      maxLength={4}
+                      onChange={(event) => {
+                        if (/^\d*$/.test(event.target.value)) {
+                          setEditZip(event.target.value)
+                        }
+                      }}
                     />
                   </div>
                   <div className="edit-group">

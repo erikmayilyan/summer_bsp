@@ -11,8 +11,39 @@ const Purchase = ({ closeModal, user, packageTitle }) => {
   const [phone, setPhone] = useState(user?.phone ?? '');
   const [date, setDate] = useState(user?.date ?? '');
   const [time, setTime] = useState(user?.time ?? '');
+  const [phoneError, setPhoneError] = useState('');
+  const today = new Date().toISOString().split("T")[0];
 
   const handlePurchase = async () => {
+    if (!/^\d{9}$/.test(phone)) {
+      setPhoneError("Phone number should contain exactly 9 digits!");
+      return;
+    };
+
+    const selectedDate = new Date(`${date}T${time}`);
+    const day = selectedDate.getDay();
+    const [hours, minutes] = time.split(':').map(Number);
+    const totalMinutes = hours * 60 + minutes;
+
+    if (day === 0) {
+      alert("Bookings are not possible on sundays");
+      return;
+    };
+
+    if (day >= 1 && day <= 5) {
+      if (totalMinutes < 8 * 60 || totalMinutes > 18 * 60) {
+        alert("Monday to Friday bookings are available from 08:00 to 18:00.");
+        return;
+      }
+    };
+
+    if (day === 6) {
+      if (totalMinutes < 10 * 60 || totalMinutes > 14 * 60) {
+        alert("Saturday bookings are available from 10:00 to 14:00.");
+        return;
+      }
+    };
+
     try {
       const response = await fetch("http://localhost:3000/payment", {
         method: "POST",
@@ -77,7 +108,7 @@ const Purchase = ({ closeModal, user, packageTitle }) => {
           <label>Email:</label>
           <div>
             <input 
-              type="text" 
+              type="email" 
               placeholder="Email" 
               name="email" 
               value={email}
@@ -95,6 +126,7 @@ const Purchase = ({ closeModal, user, packageTitle }) => {
               name="address" 
               value={address}
               onChange={(event) => setAddress(event.target.value)}
+              readOnly
             />
           </div>
         </div>
@@ -107,6 +139,7 @@ const Purchase = ({ closeModal, user, packageTitle }) => {
               name="city"
               value={city}
               onChange={(event) => setCity(event.target.value)}
+              readOnly
             />
           </div>
         </div>
@@ -119,6 +152,7 @@ const Purchase = ({ closeModal, user, packageTitle }) => {
               name="zip"
               value={zip}
               onChange={(event) => setZip(event.target.value)}
+              readOnly
             />
           </div>
         </div>
@@ -126,12 +160,19 @@ const Purchase = ({ closeModal, user, packageTitle }) => {
           <label>Phone Number:</label>
           <div>
             <input 
-              type="number"
+              type="tel"
               placeholder="Phone Number"
               name="phone"
               value={phone}
-              onChange={(event) => setPhone(event.target.value)}
+              maxLength={9}
+              onChange={(event) => {
+                if (/^\d*$/.test(event.target.value)) {
+                  setPhone(event.target.value);
+                  setPhoneError('');
+                }
+              }}
             />
+            {phoneError && <p className="form-error">{phoneError}</p>}
           </div>
         </div>
         <div className="purchase-group">
@@ -142,6 +183,7 @@ const Purchase = ({ closeModal, user, packageTitle }) => {
               placeholder="Select A Date"
               name="date"
               value={date}
+              min={today}
               onChange={(event) => setDate(event.target.value)}
             />
           </div>

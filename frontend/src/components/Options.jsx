@@ -12,7 +12,7 @@ const Options = () => {
   const user = storedUser ? JSON.parse(storedUser) : null;
 
   return (
-    <div className="options">
+    <div className="options" id="options">
       <h2>
         Options
       </h2>

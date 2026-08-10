@@ -34,8 +34,13 @@ const SignIn = () => {
 
       const data = await response.json();
 
-      if (!response.ok) {
-        setMessage(data.error || "Sign in failed. Please try again.");
+      if (data === "No Record Found!") {
+        setMessage("Account Does Not Exist!");
+        return;
+      }
+
+      if (data === "The Password is Incorrect!") {
+        setMessage("Incorrect Password!");
         return;
       }
 
@@ -59,7 +64,7 @@ const SignIn = () => {
       <Navbar />
       <div>
         <h2 className="sign-up-title">SIGN IN</h2>
-        {message && <p>{message}</p>}
+        {message && <p className="input-error">{message}</p>}
         <form onSubmit={handleSubmit} className="sign-up">
           <div className="sign-up-form">
             <div className="sign-up-group">

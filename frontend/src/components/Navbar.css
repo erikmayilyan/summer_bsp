@@ -34,6 +34,12 @@
   color: #1b5e99;
 }
 
+.nav-logo a {
+  list-style: none;
+  text-decoration: none;
+  color: #1b5e99;
+}
+
 .navbar-options {
   display: none;
   margin-left: 56px;
@@ -120,6 +126,11 @@
   color: white;
   text-decoration: none;
   margin-left: 50px;
+}
+
+.navbar-version-signin a {
+  color: white;
+  margin-left: 40px;
 }
 
 @media screen and (min-width: 1024px) {

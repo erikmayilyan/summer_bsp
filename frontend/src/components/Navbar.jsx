@@ -16,20 +16,22 @@ const Navbar = () => {
       <div className="navbar-container">
         <div className="navbar-container-two">
           <div className="navbar-container-three">
-            <h1 className="nav-logo">Clean<strong>Belval</strong></h1>
+            <h1 className="nav-logo">
+              <a href="/">Clean<strong>Belval</strong></a>
+            </h1>
           </div>
           <ul className="navbar-options">
             <li key="">
               <a href="/">Home</a>
             </li>
             <li key="">
-              <a href="/">About</a>
+              <a href="/#about">About</a>
             </li>
             <li key="">
-              <a href="/">Options</a>
+              <a href="/#options">Options</a>
             </li>
             <li key="">
-              <a href="/">Contact</a>
+              <a href="/#contact">Contact</a>
             </li>
           </ul>
           {signedIn ? (
@@ -56,20 +58,20 @@ const Navbar = () => {
           <div className="mobile-version-active">
             <ul>
               <li key="">
-                <a href="">Home</a>
+                <a href="/" onClick={() => setMobileOpen(false)}>Home</a>
               </li>
               <li key="">
-                <a href="">About</a>
+                <a href="/#about" onClick={() => setMobileOpen(false)}>About</a>
               </li>
               <li key="">
-                <a href="">Options</a>
+                <a href="/#options" onClick={() => setMobileOpen(false)}>Options</a>
               </li>
               <li key="">
-                <a href="">Contact</a>
+                <a href="/#contact" onClick={() => setMobileOpen(false)}>Contact</a>
               </li>
             </ul>
             {signedIn ? (
-              <div className="navbar-signin">
+              <div className="navbar-version-signin">
                 <a href="/dashboard" className="signin-btn">
                   DASHBOARD
                 </a>

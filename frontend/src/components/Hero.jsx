@@ -12,7 +12,7 @@ const Hero = () => {
         Professional cleaning services with a commitment to sustainability and a healthier environment.
       </p>
       <div>
-        <a href="#" className="hero-more">
+        <a href="#options" className="hero-more">
           SEE THE OPTIONS
         </a>
       </div>
