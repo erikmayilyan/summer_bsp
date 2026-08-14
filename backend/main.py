@@ -84,7 +84,15 @@ related_topics = [
   "good morning",
   "good afternoon",
   "good evening",
-  "hi"
+  "hi",
+  "hello",
+  "phone number",
+  "zip",
+  "about",
+  "about the company",
+  "about your comapny",
+  "description",
+  "mission"
 ]
 
 blocked_dangerous_phrases = [
