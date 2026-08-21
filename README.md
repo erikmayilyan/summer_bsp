@@ -6,6 +6,8 @@ Install Python 3.
 MongoDB Atlas account.
 If needed download Visual Studio.
 
+Run brew install node, brew install python, and brew install git on any terminal (can be outside the folder of this project)
+
 Download the summer_bsp repository from the github (https://github.com/erikmayilyan/summer_bsp) 
 
 Create an .env file in the backend and have the following three keys: MONGO_URI, STRIPE_SECRET_KEY, GEMINI_API_KEY. 
