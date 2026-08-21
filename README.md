@@ -1,10 +1,24 @@
 In order to run the code (both the frontend and the backend) the following prerequisites need to be satisfied:
 
 Recent version of Node.js.
+
 Install npm. 
+
 Install Python 3.
+
 MongoDB Atlas account.
+
 If needed download Visual Studio.
+
+If you are using a macbook, run /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" to download homebrew.
+
+Check the documentation for downloading the following.
+
+Git: https://git-scm.com/downloads/win.
+
+Node.js (includes npm): https://nodejs.org.
+
+Python 3: https://www.python.org/downloads.
 
 Run brew install node, brew install python, and brew install git on any terminal (can be outside the folder of this project)
 
