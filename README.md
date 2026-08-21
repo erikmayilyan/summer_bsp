@@ -8,19 +8,19 @@ Install Python 3.
 
 MongoDB Atlas account.
 
-If needed download Visual Studio.
+If needed download Visual Studio Code.
 
 If you are using a macbook, run /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" to download homebrew.
 
 Check the documentation for downloading the following.
 
-Git: https://git-scm.com/downloads/win.
+Git (Windows Only): https://git-scm.com/downloads/win.
 
-Node.js (includes npm): https://nodejs.org.
+Node.js 20.19 or higher (includes npm): https://nodejs.org.
 
 Python 3: https://www.python.org/downloads.
 
-Run brew install node, brew install python, and brew install git on any terminal (can be outside the folder of this project)
+If you are using mac, run brew install node, brew install python, and brew install git on any terminal (can be outside the folder of this project)
 
 Download the summer_bsp repository from the github (https://github.com/erikmayilyan/summer_bsp) 
 
