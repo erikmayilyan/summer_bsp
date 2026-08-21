@@ -24,6 +24,12 @@ Run brew install node, brew install python, and brew install git on any terminal
 
 Download the summer_bsp repository from the github (https://github.com/erikmayilyan/summer_bsp) 
 
+On the terminal run the follwoing:
+
+git clone https://github.com/erikmayilyan/summer_bsp
+
+cd summer_bsp
+
 Create an .env file in the backend and have the following three keys: MONGO_URI, STRIPE_SECRET_KEY, GEMINI_API_KEY. 
 
 To obtain the MONGO_URI you will have to create a free cluster at mongodb.com/atlas. 
