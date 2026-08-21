@@ -1,6 +1,10 @@
 In order to run the code (both the frontend and the backend) the following prerequisites need to be satisfied:
 
-Recent version of Node.js, Install npm, Install Python 3, MongoDB Atlas account
+Recent version of Node.js.
+Install npm. 
+Install Python 3.
+MongoDB Atlas account.
+If needed download Visual Studio.
 
 Download the summer_bsp repository from the github (https://github.com/erikmayilyan/summer_bsp) 
 
