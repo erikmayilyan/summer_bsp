@@ -44,7 +44,9 @@ To obtain the GEMINI_API_KEY you will have to go to https://aistudio.google.com/
 After you have obtained all three keys, put them in the .env file in the following format:
 
 MONGO_URI=...
+
 STRIPE_SECRET_KEY=...
+
 GEMINI_API_KEY=...
 
 Run npm install on both frontend and backend separately to have all the dependencies. 
